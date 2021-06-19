@@ -1,0 +1,31 @@
+import type { Observable } from "rxjs";
+import type { OutputState } from "./OutputState";
+import type { State } from "./State";
+import type { FSMHandler } from "./FSMHandler";
+import type { InputState } from "./InputState";
+export interface FSM {
+    getStates(): ReadonlyArray<State>;
+    getCurrentState(): OutputState;
+    setCurrentState(state: OutputState): void;
+    currentStateObservable(): Observable<[OutputState, OutputState]>;
+    getInitState(): OutputState;
+    process(event: Event): boolean;
+    log(log: boolean): void;
+    isStarted(): boolean;
+    getStartingState(): State;
+    onStarting(): void;
+    onUpdating(): void;
+    onCancelling(): void;
+    onTerminating(): void;
+    onTimeout(): void;
+    stopCurrentTimeout(): void;
+    enterStdState(state: InputState & OutputState): void;
+    setInner(inner: boolean): void;
+    getInner(): boolean;
+    setCurrentSubFSM(subFSM?: FSM): void;
+    addHandler(handler: FSMHandler): void;
+    removeHandler(handler: FSMHandler): void;
+    reinit(): void;
+    fullReinit(): void;
+    uninstall(): void;
+}
