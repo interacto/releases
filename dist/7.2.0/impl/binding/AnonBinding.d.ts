@@ -1,0 +1,36 @@
+import type { InteractionData } from "../../api/interaction/InteractionData";
+import { LogLevel } from "../../api/logging/LogLevel";
+import { BindingImpl } from "./BindingImpl";
+import type { Command } from "../../api/command/Command";
+import type { Interaction } from "../../api/interaction/Interaction";
+import type { Logger } from "../../api/logging/Logger";
+import type { UndoHistoryBase } from "../../api/undo/UndoHistoryBase";
+import type { When } from "../../api/binder/When";
+export declare class AnonBinding<C extends Command, I extends Interaction<D>, D extends InteractionData> extends BindingImpl<C, I, D> {
+    private readonly firstFn?;
+    private readonly thenFn?;
+    private readonly whenFn?;
+    private readonly cancelFn?;
+    private readonly endOrCancelFn?;
+    private readonly hadEffectsFn?;
+    private readonly hadNoEffectFn?;
+    private readonly cannotExecFn?;
+    private readonly onEndFn?;
+    private readonly onErrFn?;
+    constructor(continuousExec: boolean, interaction: I, undoHistory: UndoHistoryBase, logger: Logger, cmdSupplierFn: (d: D) => C, widgets: ReadonlyArray<unknown>, dynamicNodes: ReadonlyArray<Node>, loggers: ReadonlyArray<LogLevel>, timeoutThrottle: number, stopPropagation: boolean, prevDefault: boolean, firstFn?: (c: C, i: D) => void, thenFn?: (c: C, i: D) => void, whenFn?: Array<When<D>>, endFn?: (c: C, i: D) => void, cancelFn?: (i: D) => void, endOrCancelFn?: (i: D) => void, hadEffectsFn?: (c: C, i: D) => void, hadNoEffectFn?: (c: C, i: D) => void, cannotExecFn?: (c: C, i: D) => void, onErrFn?: (ex: unknown) => void, name?: string);
+    private configureLoggers;
+    first(): void;
+    then(): void;
+    end(): void;
+    cancel(): void;
+    endOrCancel(): void;
+    ifCmdHadNoEffect(): void;
+    ifCmdHadEffects(): void;
+    ifCannotExecuteCmd(): void;
+    protected whenStart(): boolean;
+    protected whenUpdate(): boolean;
+    protected whenStop(): boolean;
+    private whenChecker;
+    private executeWhen;
+    catch(err: unknown): void;
+}
