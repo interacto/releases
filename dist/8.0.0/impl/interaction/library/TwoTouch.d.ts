@@ -1,0 +1,10 @@
+import { XTouchDnD } from "./XTouch";
+import { RotationTouchDataImpl } from "../RotationTouchDataImpl";
+import { ScaleTouchDataImpl } from "../ScaleTouchDataImpl";
+import type { RotationTouchData } from "../../../api/interaction/RotationTouchData";
+import type { ScaleTouchData } from "../../../api/interaction/ScaleTouchData";
+import type { Logger } from "../../../api/logging/Logger";
+export type Rotate = XTouchDnD<RotationTouchData, RotationTouchDataImpl>;
+export type Scale = XTouchDnD<ScaleTouchData, ScaleTouchDataImpl>;
+export declare function rotate(logger: Logger, pxTolerance: number): () => Rotate;
+export declare function scale(logger: Logger, pxTolerance: number): () => Scale;

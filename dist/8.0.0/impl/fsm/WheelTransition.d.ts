@@ -1,0 +1,10 @@
+import { TransitionBase } from "./TransitionBase";
+import type { EventType } from "../../api/fsm/EventType";
+import type { InputState } from "../../api/fsm/InputState";
+import type { OutputState } from "../../api/fsm/OutputState";
+export declare class WheelTransition extends TransitionBase<WheelEvent> {
+    private static readonly acceptedEvents;
+    constructor(srcState: OutputState, tgtState: InputState, action?: (evt: WheelEvent) => void, guard?: (evt: WheelEvent) => boolean);
+    accept(event: Event): event is WheelEvent;
+    getAcceptedEvents(): ReadonlySet<EventType>;
+}

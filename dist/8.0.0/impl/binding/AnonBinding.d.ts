@@ -1,0 +1,38 @@
+import { BindingImpl } from "./BindingImpl";
+import type { When } from "../../api/binder/When";
+import type { RuleName, Severity } from "../../api/checker/Checker";
+import type { Command } from "../../api/command/Command";
+import type { Interaction, InteractionDataType } from "../../api/interaction/Interaction";
+import type { InteractionData } from "../../api/interaction/InteractionData";
+import type { Logger } from "../../api/logging/Logger";
+import type { LogLevel } from "../../api/logging/LogLevel";
+import type { UndoHistoryBase } from "../../api/undo/UndoHistoryBase";
+export declare class AnonBinding<C extends Command, I extends Interaction<D>, A, D extends InteractionData = InteractionDataType<I>> extends BindingImpl<C, I, A, D> {
+    private readonly firstFn;
+    private readonly thenFn;
+    private readonly whenFn;
+    private readonly cancelFn;
+    private readonly endOrCancelFn;
+    private readonly hadEffectsFn;
+    private readonly hadNoEffectFn;
+    private readonly cannotExecFn;
+    private readonly onEndFn;
+    private readonly onErrFn;
+    constructor(continuousExec: boolean, interaction: I, undoHistory: UndoHistoryBase, logger: Logger, cmdSupplierFn: (d: D | undefined) => C, widgets: ReadonlyArray<unknown>, dynamicNodes: ReadonlyArray<Node>, loggers: ReadonlyArray<LogLevel>, timeoutThrottle: number, stopPropagation: boolean, prevDefault: boolean, linterRules: ReadonlyMap<RuleName, Severity>, firstFn?: (c: C, i: D, acc: A) => void, thenFn?: (c: C, i: D, acc: A) => void, whenFn?: Array<When<D, A>>, endFn?: (c: C, i: D, acc: A) => void, cancelFn?: (i: D, acc: A) => void, endOrCancelFn?: (i: D, acc: A) => void, hadEffectsFn?: (c: C, i: D, acc: A) => void, hadNoEffectFn?: (c: C, i: D, acc: A) => void, cannotExecFn?: (c: C, i: D, acc: A) => void, onErrFn?: (ex: unknown) => void, name?: string, accInit?: A);
+    private configureLoggers;
+    first(): void;
+    then(): void;
+    end(): void;
+    cancel(): void;
+    endOrCancel(): void;
+    ifCmdHadNoEffect(): void;
+    ifCmdHadEffects(): void;
+    ifCannotExecuteCmd(): void;
+    protected whenStart(): boolean;
+    protected whenUpdate(): boolean;
+    protected whenStop(): boolean;
+    private whenChecker;
+    private executeWhen;
+    catch(err: unknown): void;
+    isWhenDefined(): boolean;
+}

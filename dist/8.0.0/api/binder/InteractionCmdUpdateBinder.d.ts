@@ -1,0 +1,33 @@
+import type { Widget } from "./BaseBinderBuilder";
+import type { CmdUpdateBinderBuilder } from "./CmdUpdateBinderBuilder";
+import type { InteractionCmdBinder } from "./InteractionCmdBinder";
+import type { InteractionUpdateBinderBuilder } from "./InteractionUpdateBinderBuilder";
+import type { WhenType } from "./When";
+import type { Binding } from "../binding/Binding";
+import type { RuleName, Severity } from "../checker/Checker";
+import type { Command } from "../command/Command";
+import type { Interaction, InteractionDataType } from "../interaction/Interaction";
+import type { InteractionData } from "../interaction/InteractionData";
+import type { LogLevel } from "../logging/LogLevel";
+export interface InteractionCmdUpdateBinder<C extends Command, I extends Interaction<D>, A, D extends InteractionData = InteractionDataType<I>> extends InteractionCmdBinder<C, I, A, D>, CmdUpdateBinderBuilder<C>, InteractionUpdateBinderBuilder<I, A, D> {
+    then(fn: ((c: C, i: D, acc: A) => void) | ((c: C) => void)): InteractionCmdUpdateBinder<C, I, A, D>;
+    continuousExecution(): InteractionCmdUpdateBinder<C, I, A, D>;
+    throttle(timeout: number): InteractionCmdUpdateBinder<C, I, A, D>;
+    first(fn: (c: C, i: D, acc: A) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    on<W>(widget: ReadonlyArray<Widget<W>> | Widget<W>, ...widgets: ReadonlyArray<Widget<W>>): InteractionCmdUpdateBinder<C, I, A, D>;
+    onDynamic(node: Widget<Node>): InteractionCmdUpdateBinder<C, I, A, D>;
+    log(...level: ReadonlyArray<LogLevel>): InteractionCmdUpdateBinder<C, I, A, D>;
+    cancel(fn: (i: D, acc: A) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    endOrCancel(fn: (i: D, acc: A) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    when(fn: (i: D, acc: Readonly<A>) => boolean, mode?: WhenType): InteractionCmdUpdateBinder<C, I, A, D>;
+    ifHadEffects(fn: (c: C, i: D, acc: A) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    ifHadNoEffect(fn: (c: C, i: D, acc: A) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    ifCannotExecute(fn: (c: C, i: D, acc: A) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    end(fn: (c: C, i: D, acc: A) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    stopImmediatePropagation(): InteractionCmdUpdateBinder<C, I, A, D>;
+    preventDefault(): InteractionCmdUpdateBinder<C, I, A, D>;
+    catch(fn: (ex: unknown) => void): InteractionCmdUpdateBinder<C, I, A, D>;
+    name(name: string): InteractionCmdUpdateBinder<C, I, A, D>;
+    configureRules(ruleName: RuleName, severity: Severity): InteractionCmdUpdateBinder<C, I, A, D>;
+    bind(): Binding<C, I, A, D>;
+}
